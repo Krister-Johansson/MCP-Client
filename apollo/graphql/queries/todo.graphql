@@ -1,0 +1,5 @@
+query Todo($todoId: String!) {
+  todo(id: $todoId) {
+    ...TodoFields
+  }
+}
