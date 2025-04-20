@@ -52,23 +52,31 @@ export function useTodoSubscriptions() {
       const deleted = data.data?.todosDeleted;
       if (!deleted) return;
 
+      // The id to use for cache operations
+      const todoId = client.cache.identify({
+        __typename: "Todo",
+        id: deleted.id
+      });
+
       client.cache.modify({
         fields: {
           todos(existingTodos = [], { readField }) {
             return existingTodos.filter(
-              (todoRef: { id: string }) =>
+              (todoRef) =>
                 readField("id", todoRef) !== deleted.id
             );
           },
         },
       });
 
-      client.cache.evict({
-        id: client.cache.identify({ __typename: "Todo", id: deleted.id }),
-      });
-
+      client.cache.evict({ id: todoId });
       client.cache.gc();
+
       toast.success(`Todo '${deleted.title}' was deleted!`);
     },
+    onError: (error) => {
+      console.error('Error in todos deleted subscription:', error);
+      toast.error('Failed to receive updates for deleted todos');
+    }
   });
 }
