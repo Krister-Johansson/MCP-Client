@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApolloWrapper>{children}</ApolloWrapper>
-        <Toaster />
+        <Toaster expand={true} richColors />
       </body>
     </html>
   );

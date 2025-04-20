@@ -7,6 +7,7 @@ import {
   TodoFilters,
 } from "@/components/todo-filters";
 import { TodoList } from "@/components/todo-list";
+import TodoListSkeleton from "@/components/todo-list-skeleton";
 import { Button } from "@/components/ui/button";
 import { useTodosQuery } from "@/src/apollo/graphql/_generated_/hooks";
 
@@ -46,10 +47,6 @@ export default function Home() {
     });
   }, [data?.todos, filterStatus, sortOption, sortDirection]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <main className="container mx-auto py-10 px-4 max-w-4xl">
       <div className="flex justify-between items-center mb-8">
@@ -73,6 +70,7 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className={`${showAIChat ? "md:col-span-2" : "md:col-span-3"}`}>
+          <TodoListSkeleton isLoading={loading} />
           <TodoList todos={filteredAndSortedTodos} />
         </div>
 

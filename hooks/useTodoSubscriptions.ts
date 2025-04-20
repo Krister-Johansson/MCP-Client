@@ -24,14 +24,16 @@ export function useTodoSubscriptions() {
           },
         },
       });
-      toast.success(`A new todo '${newTodo.title}' was created!`);
+
+      toast.success(`Todo was created`, {
+        description: newTodo.title,
+      });
     },
     onError: (error) => {
-      console.error('Error in todos added subscription:', error);
-      toast.error('Failed to receive updates for new todos');
-    }
+      console.error("Error in todos added subscription:", error);
+      toast.error("Failed to receive updates for new todos");
+    },
   });
-}
 
   useTodosUpdatedSubscription({
     onData: ({ data, client }) => {
@@ -44,12 +46,14 @@ export function useTodoSubscriptions() {
         fragmentName: "TodoFields",
         data: updated,
       });
-      toast.success(`Todo '${updated.title}' was updated!`);
+      toast.success(`Todo was updated`, {
+        description: updated.title,
+      });
     },
     onError: (error) => {
-      console.error('Error in todos updated subscription:', error);
-      toast.error('Failed to receive updates for modified todos');
-    }
+      console.error("Error in todos updated subscription:", error);
+      toast.error("Failed to receive updates for modified todos");
+    },
   });
 
   useTodosDeletedSubscription({
@@ -60,14 +64,14 @@ export function useTodoSubscriptions() {
       // The id to use for cache operations
       const todoId = client.cache.identify({
         __typename: "Todo",
-        id: deleted.id
+        id: deleted.id,
       });
 
       client.cache.modify({
         fields: {
           todos(existingTodos = [], { readField }) {
             return existingTodos.filter(
-              (todoRef) =>
+              (todoRef: { id: string }) =>
                 readField("id", todoRef) !== deleted.id
             );
           },
@@ -77,11 +81,13 @@ export function useTodoSubscriptions() {
       client.cache.evict({ id: todoId });
       client.cache.gc();
 
-      toast.success(`Todo '${deleted.title}' was deleted!`);
+      toast.success(`Todo was deleted`, {
+        description: deleted.title,
+      });
     },
     onError: (error) => {
-      console.error('Error in todos deleted subscription:', error);
-      toast.error('Failed to receive updates for deleted todos');
-    }
+      console.error("Error in todos deleted subscription:", error);
+      toast.error("Failed to receive updates for deleted todos");
+    },
   });
 }
