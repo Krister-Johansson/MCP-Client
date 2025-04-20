@@ -23,7 +23,7 @@ export function TodoForm({ className }: TodoFormProps) {
   const { control } = useFormContext();
 
   return (
-    <div className={cn(className)}>
+    <div className={cn(className, "space-y-4")}>
       <FormField
         control={control}
         name="title"

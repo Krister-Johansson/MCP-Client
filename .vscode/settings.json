@@ -6,6 +6,7 @@
     "shadcn",
     "sonner",
     "streamable",
+    "timeago",
     "turbopack"
   ]
 }
