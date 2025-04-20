@@ -1,0 +1,5 @@
+mutation CreateTodo($createTodoInput: CreateTodoInput!) {
+  createTodo(createTodoInput: $createTodoInput) {
+    ...TodoFields
+  }
+}
