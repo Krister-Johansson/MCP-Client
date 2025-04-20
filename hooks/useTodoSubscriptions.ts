@@ -41,6 +41,10 @@ export function useTodoSubscriptions() {
       });
       toast.success(`Todo '${updated.title}' was updated!`);
     },
+    onError: (error) => {
+      console.error('Error in todos updated subscription:', error);
+      toast.error('Failed to receive updates for modified todos');
+    }
   });
 
   useTodosDeletedSubscription({
