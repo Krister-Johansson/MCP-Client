@@ -26,7 +26,12 @@ export function useTodoSubscriptions() {
       });
       toast.success(`A new todo '${newTodo.title}' was created!`);
     },
+    onError: (error) => {
+      console.error('Error in todos added subscription:', error);
+      toast.error('Failed to receive updates for new todos');
+    }
   });
+}
 
   useTodosUpdatedSubscription({
     onData: ({ data, client }) => {
