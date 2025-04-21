@@ -1,4 +1,5 @@
 "use client";
+import { ChatWidget } from "@/components/chat-widget";
 import { CreateTodoDialog } from "@/components/create-todo-dialog";
 import {
   FilterStatus,
@@ -8,13 +9,11 @@ import {
 } from "@/components/todo-filters";
 import { TodoList } from "@/components/todo-list";
 import TodoListSkeleton from "@/components/todo-list-skeleton";
-import { Button } from "@/components/ui/button";
 import { useTodosQuery } from "@/src/apollo/graphql/_generated_/hooks";
 
 import { useMemo, useState } from "react";
 
 export default function Home() {
-  const [showAIChat, setShowAIChat] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [sortOption, setSortOption] = useState<SortOption>("created");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -52,9 +51,6 @@ export default function Home() {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Todo App</h1>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setShowAIChat(!showAIChat)}>
-            {showAIChat ? "Hide AI Chat" : "Show AI Chat"}
-          </Button>
           <CreateTodoDialog />
         </div>
       </div>
@@ -69,15 +65,12 @@ export default function Home() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className={`${showAIChat ? "md:col-span-2" : "md:col-span-3"}`}>
+        <div className="md:col-span-3">
           <TodoListSkeleton isLoading={loading} />
           <TodoList todos={filteredAndSortedTodos} />
         </div>
-
-        {showAIChat && (
-          <div className="md:col-span-1">{/* <AIChat todos={todos} /> */}</div>
-        )}
       </div>
+      <ChatWidget />
     </main>
   );
 }

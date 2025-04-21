@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ApolloWrapper } from "@/components/providers/apollo-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { QueryProviders } from "@/components/providers/query-providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,16 +22,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApolloWrapper>{children}</ApolloWrapper>
-        <Toaster expand={true} richColors />
+        <QueryProviders>
+          <ApolloWrapper>{children}</ApolloWrapper>
+        </QueryProviders>
+        <Toaster expand={true} richColors position="top-center" />
       </body>
     </html>
   );
